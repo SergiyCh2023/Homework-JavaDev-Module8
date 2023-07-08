@@ -33,29 +33,29 @@ public class TimeServlet extends HttpServlet {
 
 
         @Override
-        protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/html; charset=utf-8");
             String utc = req.getParameter("timezone");
 
             if (utc == null) {
-                resp.getWriter().write(initTime);
-                resp.setHeader("Refresh", "1");
-                resp.getWriter().close();
+                    resp.getWriter().write(initTime);
+            //        resp.setHeader("Refresh", "1");
+                    resp.getWriter().close();
             } else {
-                utc = utc.toUpperCase();
+                    utc = utc.toUpperCase();
 
-                if (!utc.contains("-") && !utc.contains("Z") ) {
-                    if (utc.contains("UTC")) utc = (new StringBuilder(utc)).insert(3, "+").toString();
-                    else utc = "+" + utc;
-                }
+                    if (!utc.contains("-") && !utc.contains("Z") ) {
+                        if (utc.contains("UTC")) utc = (new StringBuilder(utc)).insert(3, "+").toString();
+                        else utc = "+" + utc;
+                    }
 
-                String dateTime = LocalDateTime.now(ZoneId.of(utc.replace(" ", ""))).format(DateTimeFormatter.ofPattern(
-                        " yyyy-MM-dd    HH:mm:ss  "));
+                    String dateTime = LocalDateTime.now(ZoneId.of(utc.replace(" ", ""))).format(DateTimeFormatter.ofPattern(
+                            " yyyy-MM-dd    HH:mm:ss  "));
 
-                resp.getWriter().write("<p>The Date and time: ${dateTame}  UTC zone:  ${utc} </p>"
-                        .replace("${dateTame}", dateTime)
-                        .replace("${utc}", utc));
-                resp.getWriter().close();
+                    resp.getWriter().write("<p>The Date and time: ${dateTame}  UTC zone:  ${utc} </p>"
+                            .replace("${dateTame}", dateTime)
+                            .replace("${utc}", utc));
+                    resp.getWriter().close();
             }
         }
 
